@@ -6,8 +6,7 @@ OBJ  = ${SRC:.c=.o}
 
 LIBNAME = liblog
 
-#CFLAGS  = -O2 -pipe -Wall -Werror --std=c89 -ansi -pedantic -fPIC
-CFLAGS  = -O2 -pipe --std=c89 -ansi -pedantic -fPIC
+CFLAGS  = -O2 -pipe -Wall -Werror --std=c89 -ansi -pedantic
 LDFLAGS =
 
 ${LIBNAME:=.so}: ${OBJ}
