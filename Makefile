@@ -15,6 +15,8 @@ ${LIBNAME:=.so}: ${OBJ}
 ${LIBNAME:=.a}: ${OBJ}
 	ar rcs $@ ${OBJ}
 
+all: ${LIBNAME:=.so} ${LIBNAME:=.a} test-app
+
 .c.o:
 	${CC} ${CFLAGS} -fPIC -c $<
 
