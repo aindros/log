@@ -16,7 +16,7 @@ ${LIBNAME:=.a}: ${OBJ}
 	ar rcs $@ ${OBJ}
 
 .c.o:
-	${CC} ${CFLAGS} -c $<
+	${CC} ${CFLAGS} -fPIC -c $<
 
 all: ${LIBNAME:=.so} ${LIBNAME:=.a}
 
