@@ -23,7 +23,7 @@ all: ${LIBNAME:=.so} ${LIBNAME:=.a} test-app
 all: ${LIBNAME:=.so} ${LIBNAME:=.a}
 
 clean:
-	rm -f *.o ${LIBNAME}.*
+	rm -f *.o ${LIBNAME}.* test-app *.core
 
 
 # Targets for testing application
