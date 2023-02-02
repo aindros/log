@@ -23,5 +23,10 @@ all: ${LIBNAME:=.so} ${LIBNAME:=.a}
 clean:
 	rm -f *.o ${LIBNAME}.*
 
+
+# Targets for testing application
+main.o:
+	${CC} ${CFLAGS} -c $<
+
 test-app: main.o ${OBJ}
 	${CC} ${LDFLAGS} -o $@ main.o ${OBJ}
