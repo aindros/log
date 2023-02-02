@@ -6,7 +6,10 @@ int
 main(int argc, char **argv)
 {
 	Log *log = log_create(__FILE__);
-	log_debug(log, "test log ");
+	log_debug(log, "debug log");
+	log_info(log, "info log");
+	log_warn(log, "warning log");
+	log_error(log, "error log");
 
 	return 0;
 }
