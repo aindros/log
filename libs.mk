@@ -9,3 +9,15 @@ LIBSTR_LIB = -L${LIB_DIR}/${LIBSTR} -l:libstr.a
 
 LIBINC = ${LIBSTR_INC}
 LIBS   = ${LIBSTR_LIB}
+
+clean-libs:
+	rm -rf ${LIBDIR}
+
+libs: ${LIBDIR} ${LIBDIR}/${LIBSTR}
+
+${LIBDIR}:
+	@mkdir -p $@
+
+${LIBDIR}/${LIBSTR}:
+	fetch -o - https://git.alessandroiezzi.it/libs/c/cstr.git/snapshot/${LIBSTR}.tar.gz | tar xzf - -C ${LIBDIR}
+	cd $@ && make
