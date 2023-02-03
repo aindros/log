@@ -9,6 +9,8 @@ LIBNAME = liblog
 CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT}
 LDFLAGS =
 
+include libs.mk
+
 dist:
 	@make OPT='-O2 -pipe -Werror' all
 
