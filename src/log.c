@@ -56,29 +56,119 @@ log_parse_level_property(char *str_level)
 	return -1;
 }
 
+static int
+strends(const char *str1, const char *str2)
+{
+	int str1_s = strlen(str1);
+	int str2_s = strlen(str2);
+	int i, offset;
+
+	if (str1_s < str2_s) {
+		/* str2 is longer than str1, so str1 doesn't contain str2 */
+		return 1;
+	}
+
+	offset = str1_s - str2_s;
+
+	for (i = str1_s - 1; i <= offset; i++) {
+		if (str1[i] != str2[i - offset]) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int
+strstarts(const char *str1, const char *str2)
+{
+	int str1_s = strlen(str1);
+	int str2_s = strlen(str2);
+	int i;
+
+	if (str1_s < str2_s) {
+		/* str2 is longer than str1, so str1 doesn't contain str2 */
+		return 1;
+	}
+
+	for (i = 0; i < str2_s; i++) {
+		if (str1[i] != str2[i]) {
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+static int
+stridxof(const char *str, char c)
+{
+	int size_s = strlen(str);
+	int i;
+
+	for (i = 0; i < size_s; i++) {
+		if (str[i] == c) {
+			return i;
+		}
+	}
+
+	return size_s - 1;
+}
+
+static char *
+remove_ext(const char *filename)
+{
+	int i, size_s = stridxof(filename, '.') + 1;
+	char *name = (char *) malloc(sizeof(char) * size_s);
+
+	for (i = 0; i < size_s; i++) {
+		name[i] = filename[i];
+	}
+
+	name[size_s - 1] = '\0';
+
+	return name;
+}
+
 /* Parses the configuration line to get log level and the context */
 static int
 log_get_level(const char *filename, char *conf_key, char *conf_value)
 {
+	int default_level = DBG_LVL;
+	const char *context;
+
+	if (strends(conf_key, "level") != 0)
+		return DBG_LVL;
+
+	context = remove_ext(filename);
+	printf("%s\n", conf_key);
+
+	if (strcmp(conf_key, "logging.level.default")) {
+		default_level = log_parse_level_property(conf_value);
+	} else if (strstarts(conf_key, "file.") == 0 && strends(conf_key, context) == 0) {
+		printf("Contesto: %s %s\n", context, conf_key);
+	}
+/*
+
 	char *key = strndup(conf_key, strlen(conf_key));
 	char *context = strndup(strtok(key, "."), strlen(key));
-	int level_context = strcmp(strtok(NULL, "."), "level");
 	char *file_context = strndup(filename, HALF_SIZE);
-	int root_level = 0;
+
 	int level = 0;
 
 	file_context = strtok(file_context, ".");
 
-	if (level_context == 0) {
+	if (strends(key, "level") == 0) {
 		if (strcmp(context, "root") == 0) {
-			root_level = log_parse_level_property(conf_value);
+			default_level = log_parse_level_property(conf_value);
 		} else if (strcmp(context, file_context) == 0
 				&& (level = log_parse_level_property(conf_value)) >= 0) {
+			printf("----->>>> %d\n", level);
 			return level;
 		}
-	}
+	}*/
 
-	return root_level;
+	return default_level;
 }
 
 /* Initialize the log structure */
@@ -95,8 +185,13 @@ log_init(Log *log)
 	while (fgets(buff, BUFF_SIZE, file) != NULL
 			&& buff[0] != '#') {
 		sscanf(buff, "%[^=]=%s", conf_key, conf_value);
-		log->level = log_get_level(log->filename, conf_key, conf_value);
+
+		if (strends(conf_key, "level") == 0) {
+			log->level = log_get_level(log->filename, conf_key, conf_value);
+		}
 	}
+
+	printf("----->>>> %d\n", strstarts("file.main.level", "file"));
 
 	fclose(file);
 }
