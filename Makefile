@@ -1,6 +1,6 @@
 # See LICENSE file for copyright and license details.
 
-include libs.mk
+include libs.config.mk
 
 CC   = cc
 SRC != find src -name "*.c"
@@ -40,3 +40,5 @@ clean:
 
 tests: all
 	cd test && make clean tests
+
+include libs.target.mk
