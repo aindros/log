@@ -11,9 +11,14 @@ LIBNAME = liblog
 CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} -I${LIBINC}
 LDFLAGS = ${LIBS}
 
-
 dist:
 	@make OPT='-O2 -pipe -Werror' all
+
+static: clean libs
+	@make OPT='-O2 -pipe -Werror' ${LIBNAME:=.a}
+
+shared: clean libs
+	@make OPT='-O2 -pipe -Werror -fPIC' ${LIBNAME:=.so}
 
 debug:
 	@make OPT=-g all
