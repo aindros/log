@@ -26,13 +26,13 @@ debug:
 all: ${LIBNAME:=.so} ${LIBNAME:=.a}
 
 ${LIBNAME:=.so}: ${OBJ}
-	${CC} ${LDFLAGS} -fPIC -shared ${OBJ} -o $@
+	${CC} ${LDFLAGS} -shared ${OBJ} -o $@
 
 ${LIBNAME:=.a}: ${OBJ}
 	ar rcs $@ ${OBJ}
 
 .c.o:
-	${CC} ${CFLAGS} -fPIC -c $< -o $@
+	${CC} ${CFLAGS} -c $< -o $@
 
 clean:
 	rm -f ${OBJ} ${LIBNAME}.* *.core
