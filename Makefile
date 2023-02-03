@@ -1,13 +1,21 @@
 # See LICENSE file for copyright and license details.
 
 CC   = cc
-SRC  = log.c
+SRC != find src -name "*.c"
 OBJ  = ${SRC:.c=.o}
 
 LIBNAME = liblog
 
-CFLAGS  = -O2 -pipe -Wall -Werror --std=c89 -ansi -pedantic
+CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT}
 LDFLAGS =
+
+dist:
+	@make OPT='-O2 -pipe -Werror' all
+
+debug:
+	@make OPT=-g all
+
+all: ${LIBNAME:=.so} ${LIBNAME:=.a}
 
 ${LIBNAME:=.so}: ${OBJ}
 	${CC} ${LDFLAGS} -fPIC -shared ${OBJ} -o $@
@@ -15,20 +23,12 @@ ${LIBNAME:=.so}: ${OBJ}
 ${LIBNAME:=.a}: ${OBJ}
 	ar rcs $@ ${OBJ}
 
-all: ${LIBNAME:=.so} ${LIBNAME:=.a} test-app
-
 .c.o:
-	${CC} ${CFLAGS} -fPIC -c $<
-
-all: ${LIBNAME:=.so} ${LIBNAME:=.a}
+	${CC} ${CFLAGS} -fPIC -c $< -o $@
 
 clean:
-	rm -f *.o ${LIBNAME}.* test-app *.core
+	rm -f ${OBJ} ${LIBNAME}.* *.core
+	cd test && make clean
 
-
-# Targets for testing application
-main.o:
-	${CC} ${CFLAGS} -c $<
-
-test-app: main.o ${OBJ}
-	${CC} ${LDFLAGS} -o $@ main.o ${OBJ}
+tests: all
+	cd test && make clean tests
