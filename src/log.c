@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string2.h>
 #include <time.h>
 
 #include "log.h"
@@ -54,50 +54,6 @@ log_parse_level_property(char *str_level)
 	if (strcmp( str_level, "ERROR"   ) == 0) return ERR_LVL;
 
 	return -1;
-}
-
-static int
-strends(const char *str1, const char *str2)
-{
-	int str1_s = strlen(str1);
-	int str2_s = strlen(str2);
-	int i, offset;
-
-	if (str1_s < str2_s) {
-		/* str2 is longer than str1, so str1 doesn't contain str2 */
-		return 1;
-	}
-
-	offset = str1_s - str2_s;
-
-	for (i = str1_s - 1; i <= offset; i++) {
-		if (str1[i] != str2[i - offset]) {
-			return 1;
-		}
-	}
-
-	return 0;
-}
-
-static int
-strstarts(const char *str1, const char *str2)
-{
-	int str1_s = strlen(str1);
-	int str2_s = strlen(str2);
-	int i;
-
-	if (str1_s < str2_s) {
-		/* str2 is longer than str1, so str1 doesn't contain str2 */
-		return 1;
-	}
-
-	for (i = 0; i < str2_s; i++) {
-		if (str1[i] != str2[i]) {
-			return 1;
-		}
-	}
-
-	return 0;
 }
 
 static int
