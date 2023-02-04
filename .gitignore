@@ -3,3 +3,4 @@
 *.a
 test-app
 *.core
+lib/
