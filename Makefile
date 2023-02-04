@@ -13,7 +13,6 @@ LDFLAGS = ${LIBS}
 
 dist: static shared
 
-# ar -rc libaz.a libabc.a libxyz.a
 static: libs
 	@make OPT='-O2 -pipe -Werror' ${LIBNAME:=.a}
 	rm -f ${OBJ}
@@ -29,13 +28,18 @@ ${LIBNAME:=.so}: ${OBJ}
 	${CC} ${LDFLAGS} -shared ${OBJ} -o $@
 
 ${LIBNAME:=.a}: ${OBJ}
-	ar rcs $@ ${OBJ}
+#	ar rcs $@ ${OBJ}
+	mkdir build
+	cd build && ar -x ../${LIBSTR_PATH}
+	ar rcs $@ ${OBJ} build/*
+	rm -rf build
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
 clean:
 	rm -f ${OBJ} ${LIBNAME}.* *.core
+	rm -rf build
 	cd test && make clean
 
 tests: dist
