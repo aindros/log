@@ -11,5 +11,7 @@ main(int argc, char **argv)
 	log_warn(log, "warning log");
 	log_error(log, "error log");
 
+	printf("Version: %s\n", loglibver());
+
 	return 0;
 }

@@ -7,8 +7,9 @@ SRC != find src -name "*.c"
 OBJ  = ${SRC:.c=.o}
 
 LIBNAME = liblog
+LIBVER  = 0
 
-CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} ${LIBINC}
+CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} ${LIBINC} -DLIBVER=\"${LIBVER}\"
 LDFLAGS = ${LIBS}
 
 dist: static shared

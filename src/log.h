@@ -20,5 +20,6 @@ int		 log_is_error(Log *);
 int		 log_is_info(Log *);
 int		 log_is_warn(Log *);
 
+char    *loglibver(void);
 
 #endif /* __LOG_H__ */

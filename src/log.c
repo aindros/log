@@ -15,6 +15,12 @@
 #define BUFF_SIZE 256
 #define HALF_SIZE (BUFF_SIZE / 2 - 1)
 
+char *
+loglibver(void)
+{
+	return LIBVER;
+}
+
 /* Checks if the terminal supports colors */
 static int
 check_term_colors()
