@@ -25,8 +25,6 @@ shared: libs
 debug:
 	@make OPT=-g all
 
-all: ${LIBNAME:=.so} ${LIBNAME:=.a}
-
 ${LIBNAME:=.so}: ${OBJ}
 	${CC} ${LDFLAGS} -shared ${OBJ} -o $@
 
@@ -40,7 +38,7 @@ clean:
 	rm -f ${OBJ} ${LIBNAME}.* *.core
 	cd test && make clean
 
-tests: all
+tests: dist
 	cd test && make clean tests
 
 include libs.target.mk
