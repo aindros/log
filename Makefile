@@ -8,7 +8,7 @@ OBJ  = ${SRC:.c=.o}
 
 LIBNAME = liblog
 
-CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} -I${LIBINC}
+CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} ${LIBINC}
 LDFLAGS = ${LIBS}
 
 dist:
