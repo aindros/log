@@ -92,23 +92,25 @@ remove_ext(const char *filename)
 
 	return name;
 }
+ */
 
 /* Parses the configuration line to get log level and the context */
 static int
 log_get_level(const char *tag, char *conf_key, char *conf_value)
 {
 	int default_level = DBG_LVL;
-	const char *context;
 	const char *base_context = "logging.level";
+	/* Plus 2 because we need a dot and string terminator */
+	char *context = calloc(sizeof(char), strlen(base_context) + strlen(tag) + 2);
 
-	if (strends(conf_key, "level") != 0)
-		return DBG_LVL;
+	strcat(context, base_context);
+	strcat(context, ".");
+	strcat(context, tag);
 
-	context = remove_ext(tag);
-
-	if (strcmp(conf_key, "logging.level.default")) {
+	if (strcmp(conf_key, base_context) == 0) {
 		default_level = log_parse_level_property(conf_value);
-	} else if (strstarts(conf_key, "file.") == 0 && strends(conf_key, context) == 0) {
+	} else if (strcmp(conf_key, context) == 0) {
+		return log_parse_level_property(conf_value);
 	}
 
 	return default_level;
@@ -127,11 +129,9 @@ log_init(Log *log)
 
 	while (fgets(buff, BUFF_SIZE, file) != NULL
 			&& buff[0] != '#') {
-		sscanf(buff, "%[^=]=%s", conf_key, conf_value);
 
-		if (strends(conf_key, "level") == 0) {
-			log->level = log_get_level(log->tag, conf_key, conf_value);
-		}
+		sscanf(buff, "%[^=]=%s", conf_key, conf_value);
+		log->level = log_get_level(log->tag, conf_key, conf_value);
 	}
 
 	fclose(file);
