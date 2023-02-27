@@ -14,7 +14,6 @@
 #define ERR_LVL  3
 
 #define BUFF_SIZE 256
-#define HALF_SIZE (BUFF_SIZE / 2 - 1)
 
 char *
 loglibver(void)
@@ -139,7 +138,7 @@ log_get_level(const char *filename, char *conf_key, char *conf_value)
 static void
 log_init(Log *log)
 {
-	char conf_key[HALF_SIZE], conf_value[HALF_SIZE], buff[BUFF_SIZE];
+	char conf_key[BUFF_SIZE], conf_value[BUFF_SIZE], buff[BUFF_SIZE];
 	FILE *file = fopen("log.config", "r");
 
 	/* Use the coded configuration */
