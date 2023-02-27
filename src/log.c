@@ -104,12 +104,10 @@ log_get_level(const char *tag, char *conf_key, char *conf_value)
 		return DBG_LVL;
 
 	context = remove_ext(tag);
-	printf("%s\n", conf_key);
 
 	if (strcmp(conf_key, "logging.level.default")) {
 		default_level = log_parse_level_property(conf_value);
 	} else if (strstarts(conf_key, "file.") == 0 && strends(conf_key, context) == 0) {
-		printf("Contesto: %s %s\n", context, conf_key);
 	}
 
 	return default_level;
@@ -134,8 +132,6 @@ log_init(Log *log)
 			log->level = log_get_level(log->tag, conf_key, conf_value);
 		}
 	}
-
-	printf("----->>>> %d\n", strstarts("file.main.level", "file"));
 
 	fclose(file);
 }
