@@ -96,8 +96,9 @@ log_init(Log *log)
 	if (file == NULL)
 		return;
 
-	while (fgets(buff, BUFF_SIZE, file) != NULL
-			&& buff[0] != '#') {
+	while (fgets(buff, BUFF_SIZE, file) != NULL) {
+		/* Skip commented lines (very spartan comment) */
+		if (buff[0] == '#') continue;
 
 		sscanf(buff, "%[^=]=%s", conf_key, conf_value);
 		log->level = log_get_level(log->tag, conf_key, conf_value);
