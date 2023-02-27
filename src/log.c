@@ -111,25 +111,6 @@ log_get_level(const char *filename, char *conf_key, char *conf_value)
 	} else if (strstarts(conf_key, "file.") == 0 && strends(conf_key, context) == 0) {
 		printf("Contesto: %s %s\n", context, conf_key);
 	}
-/*
-
-	char *key = strndup(conf_key, strlen(conf_key));
-	char *context = strndup(strtok(key, "."), strlen(key));
-	char *file_context = strndup(filename, HALF_SIZE);
-
-	int level = 0;
-
-	file_context = strtok(file_context, ".");
-
-	if (strends(key, "level") == 0) {
-		if (strcmp(context, "root") == 0) {
-			default_level = log_parse_level_property(conf_value);
-		} else if (strcmp(context, file_context) == 0
-				&& (level = log_parse_level_property(conf_value)) >= 0) {
-			printf("----->>>> %d\n", level);
-			return level;
-		}
-	}*/
 
 	return default_level;
 }
