@@ -18,4 +18,4 @@ test-app: ${OBJ}
 	${CC} ${LDFLAGS} -o $@ ${OBJ}
 
 clean:
-	rm -f test-app ${OBJ}
+	rm -f test-app ${OBJ} *.core
