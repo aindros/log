@@ -99,6 +99,7 @@ log_get_level(const char *tag, char *conf_key, char *conf_value)
 {
 	int default_level = DBG_LVL;
 	const char *context;
+	const char *base_context = "logging.level";
 
 	if (strends(conf_key, "level") != 0)
 		return DBG_LVL;
