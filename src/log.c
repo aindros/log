@@ -95,7 +95,7 @@ remove_ext(const char *filename)
 
 /* Parses the configuration line to get log level and the context */
 static int
-log_get_level(const char *filename, char *conf_key, char *conf_value)
+log_get_level(const char *tag, char *conf_key, char *conf_value)
 {
 	int default_level = DBG_LVL;
 	const char *context;
@@ -103,7 +103,7 @@ log_get_level(const char *filename, char *conf_key, char *conf_value)
 	if (strends(conf_key, "level") != 0)
 		return DBG_LVL;
 
-	context = remove_ext(filename);
+	context = remove_ext(tag);
 	printf("%s\n", conf_key);
 
 	if (strcmp(conf_key, "logging.level.default")) {
@@ -131,7 +131,7 @@ log_init(Log *log)
 		sscanf(buff, "%[^=]=%s", conf_key, conf_value);
 
 		if (strends(conf_key, "level") == 0) {
-			log->level = log_get_level(log->filename, conf_key, conf_value);
+			log->level = log_get_level(log->tag, conf_key, conf_value);
 		}
 	}
 
@@ -141,10 +141,10 @@ log_init(Log *log)
 }
 
 Log *
-log_create(const char *filename) {
-	Log *log = (Log *) malloc(sizeof(Log));
-	log->filename = filename;
-	log->level = DBG_LVL;
+log_create(const char *tag) {
+	Log *log   = (Log *) malloc(sizeof(Log));
+	log->tag   = tag;
+	log->level = DBG_LVL; /* This is the default level */
 
 	log_init(log);
 
@@ -194,7 +194,7 @@ print_log(Log *log, int level, char *msg)
 	       date->tm_hour,
 	       date->tm_min,
 	       lvl,
-	       log->filename,
+	       log->tag,
 	       msg);
 }
 

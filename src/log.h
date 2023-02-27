@@ -4,7 +4,7 @@
 #define __LOG_H__
 
 typedef struct Log {
-	const char *filename;
+	const char *tag;
 	int level;
 } Log;
 
