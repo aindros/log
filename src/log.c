@@ -7,10 +7,11 @@
 
 #include "log.h"
 
-#define DBG_LVL 0
-#define INF_LVL 1
-#define WRN_LVL 2
-#define ERR_LVL 3
+#define NNN_LVL -1 /* NONE LEVEL */
+#define DBG_LVL  0
+#define INF_LVL  1
+#define WRN_LVL  2
+#define ERR_LVL  3
 
 #define BUFF_SIZE 256
 #define HALF_SIZE (BUFF_SIZE / 2 - 1)
@@ -54,6 +55,7 @@ check_term_colors()
 static int
 log_parse_level_property(char *str_level)
 {
+	if (strcmp( str_level, "NONE"    ) == 0) return NNN_LVL;
 	if (strcmp( str_level, "DEBUG"   ) == 0) return DBG_LVL;
 	if (strcmp( str_level, "INFO"    ) == 0) return INF_LVL;
 	if (strcmp( str_level, "WARNING" ) == 0) return WRN_LVL;
@@ -175,6 +177,9 @@ print_log(Log *log, int level, char *msg)
 	time_t t;
 	struct tm *date;
 	const char *lvl;
+
+	/* NONE level. Disable log */
+	if (log->level == NNN_LVL) return;
 
 	/* Don't display log if the choosen level is major.
 	 * For example: log->level is ERROR and level is INFO, only ERROR logs will be shown. */
