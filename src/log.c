@@ -63,22 +63,6 @@ log_parse_level_property(char *str_level)
 	return -1;
 }
 
-static char *
-remove_ext(const char *filename)
-{
-	int i, size_s = stridxof(filename, '.') + 1;
-	char *name = (char *) malloc(sizeof(char) * size_s);
-
-	for (i = 0; i < size_s; i++) {
-		name[i] = filename[i];
-	}
-
-	name[size_s - 1] = '\0';
-
-	return name;
-}
- */
-
 /* Parses the configuration line to get log level and the context */
 static int
 log_get_level(const char *tag, char *conf_key, char *conf_value)
