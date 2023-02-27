@@ -63,21 +63,6 @@ log_parse_level_property(char *str_level)
 	return -1;
 }
 
-static int
-stridxof(const char *str, char c)
-{
-	int size_s = strlen(str);
-	int i;
-
-	for (i = 0; i < size_s; i++) {
-		if (str[i] == c) {
-			return i;
-		}
-	}
-
-	return size_s - 1;
-}
-
 static char *
 remove_ext(const char *filename)
 {
