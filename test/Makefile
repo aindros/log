@@ -4,7 +4,7 @@ CC   = cc
 SRC != find * -name '*.c'
 OBJ  = ${SRC:.c=.o}
 
-CFLAGS  = -Wall -ansi --std=c89 -pedantic\
+CFLAGS  = -Wall --std=c99 -pedantic\
 	-I../src/
 LDFLAGS = -L../ -l:liblog.a
 
