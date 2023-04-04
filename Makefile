@@ -1,7 +1,5 @@
 # See LICENSE file for copyright and license details.
 
-include libs.config.mk
-
 CC   = cc
 SRC != find src -name "*.c"
 OBJ  = ${SRC:.c=.o}
@@ -9,16 +7,15 @@ OBJ  = ${SRC:.c=.o}
 LIBNAME = liblog
 LIBVER  = 0.0.0-a1
 
-CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} ${LIBINC} -DLIBVER=\"${LIBVER}\"
-LDFLAGS = ${LIBS}
+CFLAGS  = -Wall -ansi --std=c89 -pedantic ${OPT} -DLIBVER=\"${LIBVER}\"
 
 dist: static shared
 
-static: libs
+static:
 	@make OPT='-O2 -pipe -Werror' ${LIBNAME:=.a}
 	rm -f ${OBJ}
 
-shared: libs
+shared:
 	@make OPT='-O2 -pipe -Werror -fPIC' ${LIBNAME:=.so}
 	rm -f ${OBJ}
 
@@ -29,21 +26,14 @@ ${LIBNAME:=.so}: ${OBJ}
 	${CC} ${LDFLAGS} -shared ${OBJ} -o $@
 
 ${LIBNAME:=.a}: ${OBJ}
-#	ar rcs $@ ${OBJ}
-	mkdir build
-	cd build && ar -x ../${LIBSTR_PATH}
-	ar rcs $@ ${OBJ} build/*
-	rm -rf build
+	ar rcs $@ ${OBJ}
 
 .c.o:
 	${CC} ${CFLAGS} -c $< -o $@
 
 clean:
 	rm -f ${OBJ} ${LIBNAME}.* *.core
-	rm -rf build
 	cd test && make clean
 
 tests: dist
 	cd test && make clean tests
-
-include libs.target.mk
